@@ -5,20 +5,19 @@ const { v4: uuidv4 } = require('uuid');
 exports.register = async (data) => {
 
     //check username and password is null
-    if (!data.currency || !data.prefix || !data.secret_key || !data.ip) {
+    if (!data.game_name || !data.game_img || !data.game_type ) {
         const error = new Error("ข้อมูลไม่ถูกต้อง");
         error.statusCode = 401
         throw error;
     }
 
     // create agents
-    const admin = await model.agents.create({
+    const admin = await model.games.create({
         uuid: uuidv4(),
-        prefix: data.prefix,
-        secret_key: data.secret_key,
-        ip: data.ip,
-        status: 'ACTIVE',
-        currency: data.currency,
+        game_name: data.game_name,
+        game_img: data.game_img,
+        game_type: data.game_type,
+        game_status: 'ACTIVE',
         create_at: new Date(),
     }, {
         attributes: { exclude: ['id', 'update_at',] }
