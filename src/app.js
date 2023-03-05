@@ -3,6 +3,8 @@ const logger = require('morgan');
 
 const cors = require('cors')
 
+const version1Router = require('./v1/router');
+
 //version 2
 const version2Router = require('./v2/router');
 
@@ -18,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //version 2
+app.use('/v1', version1Router);
 app.use('/v2', version2Router);
 
 // catch 404 and forward to error handler
