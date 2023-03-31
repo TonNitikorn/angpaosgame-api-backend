@@ -8,5 +8,4 @@ const passport = require('../../middleware/passport');
 router.post('/register' , gameController.register);
 router.post('/gameMatrix' ,gameController.gameMatrix);
 
-
 module.exports = router;

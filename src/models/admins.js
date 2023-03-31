@@ -23,3 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     return admins;
   
   };
+
+
+  //create transactiongame in model transactiongame

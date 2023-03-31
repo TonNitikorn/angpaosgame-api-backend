@@ -1,11 +1,13 @@
+const { token } = require('morgan');
 const model = require('../../models/index');
 const { v4: uuidv4 } = require('uuid');
+const { default: axios } = require('axios');
 
 //register
 exports.register = async (data) => {
 
     //check username and password is null
-    if (!data.game_name || !data.game_img || !data.game_type ) {
+    if (!data.game_name || !data.game_img || !data.game_type) {
         const error = new Error("ข้อมูลไม่ถูกต้อง");
         error.statusCode = 401
         throw error;
@@ -30,7 +32,8 @@ exports.register = async (data) => {
 
 
 exports.gameMatrix = async (data) => {
-    
+
+
     const t0 = performance.now();
     // genarate a 3*5 matrix with random symbols 
     var matrix = [];
@@ -40,6 +43,7 @@ exports.gameMatrix = async (data) => {
             matrix[i][j] = Math.floor(Math.random() * 2);
         }
     }
+
 
     // set up 20 payline for 3*5 matrix (the winning combinations) as arrays of indices 5x3 matrix
     var paylines = [
@@ -63,7 +67,8 @@ exports.gameMatrix = async (data) => {
         [2, 2, 2, 1, 0],
         [0, 1, 2, 2, 2],
         [2, 1, 0, 0, 0],
-        [1,1,1],
+        [1, 1, 1],
+
     ];
 
     // find the paylines that match
@@ -81,7 +86,6 @@ exports.gameMatrix = async (data) => {
             paylineMatches.push(payline);
         }
     }
-
     // paytable 5 matching symbols and 3 matching symbols and 2 matching symbols in matrix 
     var paytable = [
         [100, 50, 20], // symbol 0
@@ -102,8 +106,7 @@ exports.gameMatrix = async (data) => {
         [2000, 1000, 500], // symbol 15
     ];
 
-
-    var betAmount =  data.betAmount;
+    var betAmount = data.betAmount;
 
 
     //total win and payline win 
@@ -120,7 +123,7 @@ exports.gameMatrix = async (data) => {
             }
         }
         if (match) {
-            
+
             if (payline.length == 5) {
                 paylineWin = paytable[matrix[payline[0]][0]][0] * betAmount;
             } else if (payline.length == 3) {
@@ -129,8 +132,8 @@ exports.gameMatrix = async (data) => {
                 paylineWin = paytable[matrix[payline[0]][0]][2] * betAmount;
             }
 
-            // console.log(paylineWin);
-            // console.log(payline.length);
+            console.log(paylineWin);
+            console.log(payline.length);
 
             totalWin += paylineWin;
             paylineWinArray.push(paylineWin);
@@ -143,17 +146,52 @@ exports.gameMatrix = async (data) => {
 
     const t1 = performance.now();
     console.log(`Time it takes to run the function: ${t1 - t0} ms`)
-    
+
 
     const gamedata = {
         betAmount: betAmount,
         data: matrix,
-        paylineLength : paylines.length,
+        paylineLength: paylines.length,
         paylineMatches: paylineMatches,
         paylineMatchesLength: paylineMatches.length,
         totalWin: parseFloat(totalWin).toFixed(2),
-        paylineWinArray: paylineWinArray
+        paylineWinArray: paylineWinArray,
+        token: 'test bearer token'
     }
-  
-   return gamedata;
+
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNzE1ZDlhNzItNjk4Yy00MWIyLTljMTQtMWI0NWFlNzkyNGZkIiwiaWF0IjoxNjgwMjQ1Nzc5LCJleHAiOjE2ODAyNDkzNzl9.DD2SDNcK1B6UmDmzCfAMpBiCIwNZBADGKYco9h5b_BE'
+
+
+    const getprofile = {
+        headers: {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json",
+        },
     }
+    const profile = await axios.get('http://localhost:5002/user/profile', { headers: getprofile.headers });
+    console.log(profile.data.credit);
+    
+    const updateprofile = {
+        uuid: uuidv4(),
+        prefix: 'agent prefix',
+        username: 'member username',
+        game_name: 'Data 2 Dog game 2023',
+        bet_detail: '',
+        bet_amount: gamedata.betAmount,
+        bet_type: 'nomal',
+        bet_status: 'SUCCESS',
+        bet_amount_before: profile.data.credit,
+        bet_amount_after: (parseFloat(profile.data.credit) - parseFloat(gamedata.betAmount)) + parseFloat(gamedata.totalWin),
+        bet_result: gamedata.totalWin,
+        bet_currency: 'baht',
+        create_at: new Date,
+        update_at: new Date,
+    };
+
+    console.log(updateprofile);
+
+    return { gamedata };
+
+
+}
+
