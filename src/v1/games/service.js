@@ -130,7 +130,7 @@ exports.gameMatrix = async (data) => {
         token: 'test bearer token'
     }
 
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNzE1ZDlhNzItNjk4Yy00MWIyLTljMTQtMWI0NWFlNzkyNGZkIiwiaWF0IjoxNjgwMjQ1Nzc5LCJleHAiOjE2ODAyNDkzNzl9.DD2SDNcK1B6UmDmzCfAMpBiCIwNZBADGKYco9h5b_BE'
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNzE1ZDlhNzItNjk4Yy00MWIyLTljMTQtMWI0NWFlNzkyNGZkIiwiaWF0IjoxNjgwNTMwNDk5LCJleHAiOjE2ODA1MzQwOTl9.X1074oAJcxmgxRT8UQSsf230AhV_qD-yvkAY1xsRGU0'
 
 
     const getprofile = {
@@ -139,13 +139,12 @@ exports.gameMatrix = async (data) => {
             "Content-Type": "application/json",
         },
     }
-    const profile = await axios.get('http://localhost:5002/user/profile', { headers: getprofile.headers });
-    console.log(profile.data);
-    
+    const profile = await axios.get('http://localhost:5003/user/profile', { headers: getprofile.headers });
+
     const updateprofile = {
-        uuid: uuidv4(), 
-        prefix: 'agent prefix',
-        username: 'member username',
+        uuid: uuidv4(),
+        prefix: profile.data.prefix,
+        username: profile.data.username,
         game_name: 'Data 2 Dog game 2023',
         bet_detail: '',
         bet_amount: gamedata.betAmount,
@@ -158,11 +157,30 @@ exports.gameMatrix = async (data) => {
         create_at: new Date,
         update_at: new Date,
     };
-
-    console.log(updateprofile);
-
-    return { gamedata };
-
-
+    const sentProfile = {
+        username: profile.data.username,
+        credit: updateprofile.bet_amount_after,
+    }
+    // // transaction
+    await model.transactions.create({
+        uuid: uuidv4(),
+        prefix: profile.data.prefix,
+        username: profile.data.username,
+        game_name: 'Data 2 Dog game 2023',
+        bet_detail: '',
+        bet_amount: gamedata.betAmount,
+        bet_type: 'normal',
+        bet_status: 'SUCCESS',
+        bet_amount_before: profile.data.credit,
+        bet_amount_after: (parseFloat(profile.data.credit) - parseFloat(gamedata.betAmount)) + parseFloat(gamedata.totalWin),
+        bet_result: gamedata.totalWin,
+        bet_currency: 'baht',
+        create_at: new Date,
+        update_at: new Date,
+    },);
+    const updateCredit = await axios.post('http://localhost:5001/external/updateCredit',sentProfile, { headers: getprofile.headers }); 
+    console.log(updateCredit);
+    return {updateprofile ,paylineWinArray};
 }
+
 

@@ -1,1 +1,0 @@
-const membermanageService = require('./service');

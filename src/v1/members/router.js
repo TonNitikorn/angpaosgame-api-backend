@@ -4,6 +4,7 @@ const membermanageController = require('./controller');
 const limiter = require('../../middleware/rate_limiter');
 const passport = require('../../middleware/passport');
 
-router.post('/register' , membermanageController.register);
+
+router.post('/getMemberTransaction' ,membermanageController.getMemberTransaction);
 
 module.exports = router;
