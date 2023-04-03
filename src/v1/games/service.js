@@ -3,34 +3,6 @@ const model = require('../../models/index');
 const { v4: uuidv4 } = require('uuid');
 const { default: axios } = require('axios');
 
-//register
-exports.register = async (data) => {
-
-    //check username and password is null
-    if (!data.game_name || !data.game_img || !data.game_type) {
-        const error = new Error("ข้อมูลไม่ถูกต้อง");
-        error.statusCode = 401
-        throw error;
-    }
-
-    // create agents
-    const admin = await model.games.create({
-        uuid: uuidv4(),
-        game_name: data.game_name,
-        game_img: data.game_img,
-        game_type: data.game_type,
-        game_status: 'ACTIVE',
-        create_at: new Date(),
-    }, {
-        attributes: { exclude: ['id', 'update_at',] }
-    }
-    );
-
-
-    return admin
-};
-
-
 exports.gameMatrix = async (data) => {
 
 
@@ -68,7 +40,6 @@ exports.gameMatrix = async (data) => {
         [0, 1, 2, 2, 2],
         [2, 1, 0, 0, 0],
         [1, 1, 1],
-
     ];
 
     // find the paylines that match
@@ -169,10 +140,10 @@ exports.gameMatrix = async (data) => {
         },
     }
     const profile = await axios.get('http://localhost:5002/user/profile', { headers: getprofile.headers });
-    console.log(profile.data.credit);
+    console.log(profile.data);
     
     const updateprofile = {
-        uuid: uuidv4(),
+        uuid: uuidv4(), 
         prefix: 'agent prefix',
         username: 'member username',
         game_name: 'Data 2 Dog game 2023',
