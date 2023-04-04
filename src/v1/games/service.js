@@ -5,6 +5,18 @@ const { default: axios } = require('axios');
 
 exports.gameMatrix = async (data) => {
 
+    const token = data.token;
+
+
+    const getprofile = {
+        headers: {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json",
+        },
+    }
+    const profile = await axios.get('http://localhost:5003/user/profile', { headers: getprofile.headers });
+
+
 
     const t0 = performance.now();
     // genarate a 3*5 matrix with random symbols 
@@ -130,22 +142,13 @@ exports.gameMatrix = async (data) => {
         token: 'test bearer token'
     }
 
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNzE1ZDlhNzItNjk4Yy00MWIyLTljMTQtMWI0NWFlNzkyNGZkIiwiaWF0IjoxNjgwNTMwNDk5LCJleHAiOjE2ODA1MzQwOTl9.X1074oAJcxmgxRT8UQSsf230AhV_qD-yvkAY1xsRGU0'
 
-
-    const getprofile = {
-        headers: {
-            "Authorization": "Bearer " + token,
-            "Content-Type": "application/json",
-        },
-    }
-    const profile = await axios.get('http://localhost:5003/user/profile', { headers: getprofile.headers });
 
     const updateprofile = {
         uuid: uuidv4(),
         prefix: profile.data.prefix,
         username: profile.data.username,
-        game_name: 'Data 2 Dog game 2023',
+        game_name: data.game_name,
         bet_detail: '',
         bet_amount: gamedata.betAmount,
         bet_type: 'nomal',
@@ -157,6 +160,9 @@ exports.gameMatrix = async (data) => {
         create_at: new Date,
         update_at: new Date,
     };
+    if(profile.data.credit < 0){
+        return "credit not enough"
+    }
     const sentProfile = {
         username: profile.data.username,
         credit: updateprofile.bet_amount_after,
