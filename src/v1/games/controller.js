@@ -1,6 +1,6 @@
 const gameServices = require('./service');
-//register with jwt token
 
+//register with jwt token
 
 exports.gameMatrix = async (req, res, next) => {
     try {

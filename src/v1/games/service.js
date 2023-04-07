@@ -5,6 +5,12 @@ const { default: axios } = require('axios');
 
 exports.gameMatrix = async (data) => {
 
+
+    // const currentUrl = window.location.href;
+    // const params = new URLSearchParams(currentUrl.search);
+    // const sub = params.get("token");
+
+    // const token = sub;
     const token = data.token;
 
 
@@ -27,8 +33,7 @@ exports.gameMatrix = async (data) => {
             matrix[i][j] = Math.floor(Math.random() * 2);
         }
     }
-
-
+    
     // set up 20 payline for 3*5 matrix (the winning combinations) as arrays of indices 5x3 matrix
     var paylines = [
         [0, 0, 0, 0, 0],
@@ -53,7 +58,6 @@ exports.gameMatrix = async (data) => {
         [2, 1, 0, 0, 0],
         [1, 1, 1],
     ];
-
     // find the paylines that match
     var paylineMatches = [];
     for (var i = 0; i < paylines.length; i++) {
@@ -160,7 +164,7 @@ exports.gameMatrix = async (data) => {
         create_at: new Date,
         update_at: new Date,
     };
-    if(profile.data.credit < 0){
+    if (profile.data.credit < 0) {
         return "credit not enough"
     }
     const sentProfile = {
@@ -184,9 +188,9 @@ exports.gameMatrix = async (data) => {
         create_at: new Date,
         update_at: new Date,
     },);
-    const updateCredit = await axios.post('http://localhost:5001/external/updateCredit',sentProfile, { headers: getprofile.headers }); 
+    const updateCredit = await axios.post('http://localhost:5001/external/updateCredit', sentProfile, { headers: getprofile.headers });
     console.log(updateCredit);
-    return {updateprofile ,paylineWinArray};
+    return { updateprofile, paylineWinArray };
 }
 
 
