@@ -3,17 +3,26 @@ const model = require('../../models/index');
 const { v4: uuidv4 } = require('uuid');
 const { default: axios } = require('axios');
 
+
+// exports.membercredit = async (req, res, next) => {
+//     const token = data.token;
+//    await axios.get('https://member-api.angpaos.cloud//user/profile' ,{headers:token});
+       
+
+// }
+
+
 exports.gameMatrix = async (data) => {
 
 
-    const currentUrl = window.location.href;
-    const params = new URLSearchParams(currentUrl.search);
-    const sub = params.get("token");
+    // const currentUrl = window.location.href;
+    // const params = new URLSearchParams(currentUrl.search);
+    // const sub = params.get("token");
 
-    const token = sub;
+    // const token = sub;
     
     const betAmount = data.betAmount; 
-    // const token = data.token;
+    const token = data.token;
 
 
     const getprofile = {
@@ -22,7 +31,7 @@ exports.gameMatrix = async (data) => {
             "Content-Type": "application/json",
         },
     }
-    const profile = await axios.get('http://localhost:5003/user/profile', { headers: getprofile.headers });
+    const profile = await axios.get('https://member-api.angpaos.cloud/user/profile', { headers: getprofile.headers });
     console.log(profile.data.credit);
     console.log(parseFloat(betAmount));
     if(profile.data.credit < parseFloat(betAmount)){
@@ -193,7 +202,7 @@ exports.gameMatrix = async (data) => {
         create_at: new Date,
         update_at: new Date,
     },);
-    const updateCredit = await axios.post('http://localhost:5001/external/updateCredit', sentProfile, { headers: getprofile.headers });
+    const updateCredit = await axios.post('https://bo-api.angpaos.cloud/external/updateCredit', sentProfile, { headers: getprofile.headers });
     console.log(updateCredit);
     return { updateprofile , paylineWinArray };
 }
