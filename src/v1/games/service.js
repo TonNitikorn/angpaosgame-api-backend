@@ -6,12 +6,14 @@ const { default: axios } = require('axios');
 exports.gameMatrix = async (data) => {
 
 
-    // const currentUrl = window.location.href;
-    // const params = new URLSearchParams(currentUrl.search);
-    // const sub = params.get("token");
+    const currentUrl = window.location.href;
+    const params = new URLSearchParams(currentUrl.search);
+    const sub = params.get("token");
 
-    // const token = sub;
-    const token = data.token;
+    const token = sub;
+    
+    const betAmount = data.betAmount; 
+    // const token = data.token;
 
 
     const getprofile = {
@@ -21,9 +23,15 @@ exports.gameMatrix = async (data) => {
         },
     }
     const profile = await axios.get('http://localhost:5003/user/profile', { headers: getprofile.headers });
-
-
-
+    console.log(profile.data.credit);
+    console.log(parseFloat(betAmount));
+    if(profile.data.credit < parseFloat(betAmount)){
+        const message = {
+            message: "credit ไม่เพียงพอ",
+        }
+    
+        return message;
+    }
     const t0 = performance.now();
     // genarate a 3*5 matrix with random symbols 
     var matrix = [];
@@ -93,7 +101,6 @@ exports.gameMatrix = async (data) => {
         [2000, 1000, 500], // symbol 15
     ];
 
-    var betAmount = data.betAmount;
 
 
     //total win and payline win 
@@ -164,9 +171,7 @@ exports.gameMatrix = async (data) => {
         create_at: new Date,
         update_at: new Date,
     };
-    if (profile.data.credit < 0) {
-        return "credit not enough"
-    }
+
     const sentProfile = {
         username: profile.data.username,
         credit: updateprofile.bet_amount_after,
@@ -190,7 +195,8 @@ exports.gameMatrix = async (data) => {
     },);
     const updateCredit = await axios.post('http://localhost:5001/external/updateCredit', sentProfile, { headers: getprofile.headers });
     console.log(updateCredit);
-    return { updateprofile, paylineWinArray };
+    return { updateprofile , paylineWinArray };
 }
+
 
 
