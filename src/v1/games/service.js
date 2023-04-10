@@ -13,18 +13,13 @@ const { default: axios } = require('axios');
 
 
 exports.gameMatrix = async (data) => {
-
-
     // const currentUrl = window.location.href;
     // const params = new URLSearchParams(currentUrl.search);
     // const sub = params.get("token");
 
     // const token = sub;
-    
     const betAmount = data.betAmount; 
     const token = data.token;
-
-
     const getprofile = {
         headers: {
             "Authorization": "Bearer " + token,
@@ -32,8 +27,6 @@ exports.gameMatrix = async (data) => {
         },
     }
     const profile = await axios.get('https://member-api.angpaos.cloud/user/profile', { headers: getprofile.headers });
-    console.log(profile.data.credit);
-    console.log(parseFloat(betAmount));
     if(profile.data.credit < parseFloat(betAmount)){
         const message = {
             message: "credit ไม่เพียงพอ",
@@ -204,7 +197,7 @@ exports.gameMatrix = async (data) => {
     },);
     const updateCredit = await axios.post('https://bo-api.angpaos.cloud/external/updateCredit', sentProfile, { headers: getprofile.headers });
     console.log(updateCredit);
-    return { updateprofile , paylineWinArray };
+    return { updateprofile , paylineWinArray,gamedata };
 }
 
 
