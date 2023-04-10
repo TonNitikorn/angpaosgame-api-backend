@@ -12,3 +12,15 @@ exports.login = async (req, res, next) => {
         next(error);
     }
 }
+exports.loginGame = async (req, res, next) => {
+    try {
+
+        const result = await authServices.loginGame(req.body);
+        res.status(200).json(
+            result,
+        );
+
+    } catch (error) {
+        next(error);
+    }
+}

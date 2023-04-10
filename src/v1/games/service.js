@@ -196,7 +196,7 @@ exports.gameMatrix = async (data) => {
     },);
     const updateCredit = await axios.post('https://bo-api.angpaos.cloud/external/updateCredit', sentProfile, { headers: getprofile.headers });
     console.log(updateCredit);
-    return { gamedata, updateprofile, paylineWinArray };
+    return { gamedata, updateprofile};
 }
 
 
