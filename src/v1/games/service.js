@@ -7,7 +7,7 @@ const { default: axios } = require('axios');
 // exports.membercredit = async (req, res, next) => {
 //     const token = data.token;
 //    await axios.get('https://member-api.angpaos.cloud//user/profile' ,{headers:token});
-       
+
 
 // }
 
@@ -18,7 +18,7 @@ exports.gameMatrix = async (data) => {
     // const sub = params.get("token");
 
     // const token = sub;
-    const betAmount = data.betAmount; 
+    const betAmount = data.betAmount;
     const token = data.token;
     const getprofile = {
         headers: {
@@ -27,11 +27,11 @@ exports.gameMatrix = async (data) => {
         },
     }
     const profile = await axios.get('https://member-api.angpaos.cloud/user/profile', { headers: getprofile.headers });
-    if(profile.data.credit < parseFloat(betAmount)){
+    if (profile.data.credit < parseFloat(betAmount)) {
         const message = {
             message: "credit ไม่เพียงพอ",
         }
-    
+
         return message;
     }
     const t0 = performance.now();
@@ -43,7 +43,7 @@ exports.gameMatrix = async (data) => {
             matrix[i][j] = Math.floor(Math.random() * 2);
         }
     }
-    
+
     // set up 20 payline for 3*5 matrix (the winning combinations) as arrays of indices 5x3 matrix
     var paylines = [
         [0, 0, 0, 0, 0],
@@ -66,7 +66,6 @@ exports.gameMatrix = async (data) => {
         [2, 2, 2, 1, 0],
         [0, 1, 2, 2, 2],
         [2, 1, 0, 0, 0],
-        [1, 1, 1],
     ];
     // find the paylines that match
     var paylineMatches = [];
@@ -197,7 +196,7 @@ exports.gameMatrix = async (data) => {
     },);
     const updateCredit = await axios.post('https://bo-api.angpaos.cloud/external/updateCredit', sentProfile, { headers: getprofile.headers });
     console.log(updateCredit);
-    return { updateprofile , paylineWinArray,gamedata };
+    return { gamedata, updateprofile, paylineWinArray };
 }
 
 
