@@ -55,18 +55,18 @@ const axios = require('axios');
 
 exports.loginGame = async (data) => {
     let jwtkey = 'eyJhbGciOiJIUzI1NiJ9.eyJJc3N1ZXIiOiJza19hZG1pbiIsIlVzZXJuYW1lIjoic29mdGtpbmdkb20ifQ.7uHUzTIGGhetySt1C6RHXd_bqZorOk1kw8CxfaluzjY'
-
     //verify the token
     const token = req.headers.authorization.split(' ')[1];
     // const  token = data.token;
     const decoded = jwt.verify(token, jwtkey);
 
     const profile = await axios.get('https://member-api.angpaos.cloud/user/profile',{headers : {Authorization: `Bearer ${token}`}});
-    console.log(profile.data);
     data = {
         message:" successful",
         userUUID: decoded.uuid,
-        data: profile.data,
+        credit: profile.data.credit,
+        username: profile.data.username,
+
         
     }
     return data;

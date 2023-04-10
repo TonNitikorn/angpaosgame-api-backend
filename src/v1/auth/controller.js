@@ -21,6 +21,9 @@ exports.loginGame = async (req, res, next) => {
         );
 
     } catch (error) {
+        // if(error.status_code === 500){
+        //     console.log('sdfdsfsdfsdfdsf');
+        // }
         next(error);
     }
 }
