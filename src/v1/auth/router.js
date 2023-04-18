@@ -5,6 +5,7 @@ const limiter = require('../../middleware/rate_limiter');
 
 
 router.post('/login' , authController.login);
+router.post('/loginGame' , authController.loginGame);
 
 
 module.exports = router;

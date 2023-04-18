@@ -10,8 +10,6 @@ exports.gameMatrix = async (req, res, next) => {
         res.status(200).json(
             result,
         );
-
-
     } catch (error) {
         next(error);
     }
