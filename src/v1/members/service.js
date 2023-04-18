@@ -8,7 +8,7 @@ const { v4: uuidv4 } = require('uuid');
 exports.getTransaction = async (data) => {
     const transaction = await model.transactions.findAll({
         where: {
-            username: data.username,
+            username: {[model.Sequelize.Op.like]: data.username},
             create_at: {
                 [model.Sequelize.Op.gte]: data.start_date,
                 [model.Sequelize.Op.lte]: data.end_date
