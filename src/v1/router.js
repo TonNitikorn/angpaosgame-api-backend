@@ -7,6 +7,7 @@ const adminRouter = require('./admins/router');
 const agentRouter = require('./agents/router');
 const gameRouter = require('./games/router');
 const member = require('./members/router');
+const transaction = require('./transactions/router');
 
 
 //create router prefix /v1
@@ -15,6 +16,7 @@ router.use('/admin', adminRouter);
 router.use('/agent', agentRouter);
 router.use('/game', gameRouter);
 router.use('/member', member);
+router.use('/transaction', transaction);
 
 
 

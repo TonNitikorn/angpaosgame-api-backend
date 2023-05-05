@@ -13,11 +13,7 @@ const { default: axios } = require('axios');
 
 
 exports.gameMatrix = async (data) => {
-    // const currentUrl = window.location.href;
-    // const params = new URLSearchParams(currentUrl.search);
-    // const sub = params.get("token");
 
-    // const token = sub;
     const betAmount = data.betAmount;
     const token = data.token;
     const getprofile = {
@@ -34,6 +30,38 @@ exports.gameMatrix = async (data) => {
 
         return message;
     }
+
+    console.log(profile);
+
+    reel_weights = [
+        [2, 1, 2, 2, 1],
+        [2, 2, 0, 0, 1],
+        [2, 1, 1, 1, 0],
+        [0, 1, 0, 1, 2],
+        [1, 0, 2, 1, 1],
+        [1, 2, 0, 0, 1],
+        [0, 0, 2, 1, 0],
+        [0, 0, 0, 1, 0],
+        [1, 0, 2, 1, 2],
+        [0, 1, 0, 1, 0],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 0, 0],
+        [1, 1, 0, 1, 2],
+        [0, 0, 1, 1, 1],
+        [1, 1, 1, 1, 0],
+        [0, 1, 1, 0, 1],
+        [0, 1, 0, 1, 0],
+    ]
+    symbols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    
+    var i, j, table = [];
+    for (i = 0; i < reel_weights.length; i++) {
+        for (j = 0; j < symbols[i]; j++) {
+            table.push(symbols[i]);
+        }
+    }
+ 
+
     const t0 = performance.now();
     // genarate a 3*5 matrix with random symbols 
     var matrix = [];
@@ -44,28 +72,54 @@ exports.gameMatrix = async (data) => {
         }
     }
 
+
+
     // set up 20 payline for 3*5 matrix (the winning combinations) as arrays of indices 5x3 matrix
     var paylines = [
-        [0, 0, 0, 0, 0],
-        [1, 1, 1, 1, 1],
-        [2, 2, 2, 2, 2],
-        [0, 1, 2, 1, 0],
-        [2, 1, 0, 1, 2],
-        [0, 0, 1, 2, 2],
-        [2, 2, 1, 0, 0],
-        [1, 0, 0, 0, 1],
-        [1, 2, 2, 2, 1],
-        [1, 0, 1, 2, 1],
+        [2, 1, 2, 2, 1],
+        [2, 2, 0, 0, 1],
+        [0, 1, 0, 1, 2],
+        [1, 0, 2, 1, 1],
+        [1, 2, 0, 0, 1],
+        [0, 0, 2, 1, 0],
+        [0, 0, 0, 1, 0],
+        [1, 0, 2, 1, 2],
         [0, 1, 0, 1, 0],
-        [2, 1, 2, 1, 2],
-        [0, 1, 1, 1, 0],
-        [2, 1, 1, 1, 2],
-        [1, 0, 1, 0, 1],
-        [1, 2, 1, 2, 1],
-        [0, 0, 0, 1, 2],
-        [2, 2, 2, 1, 0],
-        [0, 1, 2, 2, 2],
-        [2, 1, 0, 0, 0],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 0, 0],
+        [1, 1, 0, 1, 2],
+        [0, 0, 1, 1, 1],
+        [2, 1, 2, 2],
+        [2, 2, 0, 0],
+        [2, 1, 1, 1],
+        [0, 1, 0, 1],
+        [1, 0, 2, 1],
+        [1, 2, 0, 0],
+        [0, 0, 2, 1],
+        [0, 0, 0, 1],
+        [1, 0, 2, 1],
+        [0, 1, 0, 1],
+        [1, 0, 0, 0],
+        [1, 1, 1, 0],
+        [1, 1, 0, 1],
+        [0, 0, 1, 1],
+        [2, 1, 2],
+        [2, 2, 0],
+        [2, 1, 2],
+        [2, 2, 0],
+        [2, 1, 1],
+        [0, 1, 0],
+        [1, 0, 2],
+        [1, 2, 0],
+        [0, 0, 2],
+        [0, 0, 0],
+        [1, 0, 2],
+        [0, 1, 0],
+        [1, 0, 0],
+        [1, 1, 1],
+        [1, 1, 0],
+        [0, 0, 1],
+        [2, 2, 2],
     ];
     // find the paylines that match
     var paylineMatches = [];
@@ -83,6 +137,9 @@ exports.gameMatrix = async (data) => {
         }
     }
     // paytable 5 matching symbols and 3 matching symbols and 2 matching symbols in matrix 
+
+
+
     var paytable = [
         [100, 50, 20], // symbol 0
         [50, 20, 10], // symbol 1
@@ -96,12 +153,12 @@ exports.gameMatrix = async (data) => {
         [0.1, 0.05, 0.01], // symbol 9
         [0.05, 0.02, 0.005], // symbol 10
         [0.02, 0.01, 0.002], // symbol 11
+
         [0.01, 0.005, 0.001], // symbol 12
         [0.005, 0.002, 0.0005], // symbol 13
         [0.002, 0.001, 0.0002], // symbol 14
         [2000, 1000, 500], // symbol 15
     ];
-
 
 
     //total win and payline win 
@@ -151,7 +208,6 @@ exports.gameMatrix = async (data) => {
         paylineMatchesLength: paylineMatches.length,
         totalWin: parseFloat(totalWin).toFixed(2),
         paylineWinArray: paylineWinArray,
-        token: 'test bearer token'
     }
 
 
@@ -196,7 +252,7 @@ exports.gameMatrix = async (data) => {
     },);
     const updateCredit = await axios.post('https://bo-api.angpaos.cloud/external/updateCredit', sentProfile, { headers: getprofile.headers });
     console.log(updateCredit);
-    return { gamedata, updateprofile};
+    return { gamedata, updateprofile };
 }
 
 
