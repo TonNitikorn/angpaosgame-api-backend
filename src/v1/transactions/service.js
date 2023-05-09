@@ -25,7 +25,7 @@ exports.updateCredit = async (data) => {
 
     console.log(profile);
     const sentProfile = {
-        username: profile.data.username,
+        username: profile.data.username,  
         credit: data.credit,
     }
 
@@ -39,6 +39,7 @@ exports.updateCredit = async (data) => {
 exports.createTransaction = async (data) => {
        await model.transactions.create({
         uuid: uuidv4(),
+        
         prefix: data.prefix,
         username: data.username,
         game_name: 'Data 2 Dog game 2023',
@@ -54,3 +55,11 @@ exports.createTransaction = async (data) => {
         update_at: new Date,
     },);
 }
+
+exports.gamelist = async (data) => {
+
+}
+exports.newGame = async (data) => {
+    
+}
+    
