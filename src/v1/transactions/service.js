@@ -4,9 +4,8 @@ const { v4: uuidv4 } = require('uuid');
 const { default: axios } = require('axios');
 
 
-exports.updateCredit = async (data) => {
+exports.updateCredit = async (data,token) => {
     const betAmount = data.betAmount;
-    const token = data.token;
     const getprofile = {
         headers: {
             "Authorization": "Bearer " + token,
@@ -22,24 +21,20 @@ exports.updateCredit = async (data) => {
         return message;
     }
     
-
-    console.log(profile);
     const sentProfile = {
         username: profile.data.username,  
         credit: data.credit,
     }
 
 
-    const updateCredit = await axios.post('https://bo-api.angpaos.cloud/external/updateCredit', sentProfile);
-    console.log(updateCredit);
-    return sentProfile;
+    await axios.post('https://bo-api.angpaos.cloud/external/updateCredit', sentProfile);
+    return "update credit success";
 }
 
 
 exports.createTransaction = async (data) => {
        await model.transactions.create({
         uuid: uuidv4(),
-        
         prefix: data.prefix,
         username: data.username,
         game_name: 'Data 2 Dog game 2023',

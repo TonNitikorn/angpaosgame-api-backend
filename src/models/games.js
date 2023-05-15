@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       game_img: DataTypes.STRING(255),
       game_status: DataTypes.ENUM('ACTIVE','INACTIVE'),
       game_type: DataTypes.DECIMAL(10, 2),
+      game_url: DataTypes.STRING(255),
       create_at: DataTypes.DATE,
       update_at: DataTypes.DATE,
     },
