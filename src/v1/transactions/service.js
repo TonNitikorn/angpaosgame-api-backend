@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const { default: axios } = require('axios');
 
 
-exports.updateCredit = async (data,token) => {
+exports.updateCredit = async (data, token) => {
     const betAmount = data.betAmount;
     const getprofile = {
         headers: {
@@ -20,20 +20,48 @@ exports.updateCredit = async (data,token) => {
 
         return message;
     }
-    
-    const sentProfile = {
-        username: profile.data.username,  
-        credit: data.credit,
-    }
 
+    const sentProfile = {
+        username: profile.data.username,
+        credit: data.creditAfter,
+    }
+    console.log(profile);
+
+    const game_transactions = await model.game_transactions.create({
+        uuid: uuidv4(),
+        prefix: profile.data.prefix,
+        username: profile.data.username,
+        game_name: data.game_name,
+        winSymbols: data.winSymbols,
+        betAmount: data.betAmount,
+        creditBefore: data.creditBefore,
+        creditAfter: data.creditAfter,
+        autoSpin: data.autoSpin,
+        fastSpin: data.fastSpin,
+        freeSpinAdd: data.freeSpinAdd,
+        freeSpinLeft: data.freeSpinLeft,
+        multiWin: data.multiWin,
+        payLine: data.payLine,
+        payTable: data.payTable,
+        spacialSpin: data.spacialSpin,
+        win: data.win,
+        winTotal: data.winTotal,
+        symbolsStore: data.symbolsStore,
+        bet_type: 'normal',
+        bet_status: 'SUCCESS',
+        bet_currency: 'baht',
+        create_at: new Date,
+        update_at: new Date,
+    },);
 
     await axios.post('https://bo-api.angpaos.cloud/external/updateCredit', sentProfile);
-    return "update credit success";
+
+    return game_transactions;
 }
 
 
 exports.createTransaction = async (data) => {
-       await model.transactions.create({
+    await model.transactions.create({
         uuid: uuidv4(),
         prefix: data.prefix,
         username: data.username,
@@ -49,12 +77,6 @@ exports.createTransaction = async (data) => {
         create_at: new Date,
         update_at: new Date,
     },);
-}
 
-exports.gamelist = async (data) => {
-
+    return "create transaction success";
 }
-exports.newGame = async (data) => {
-    
-}
-    

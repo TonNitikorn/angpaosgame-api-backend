@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const axios = require('axios');
+const transaction = require('../../models/transaction');
 
 
 // loginOTP
@@ -69,7 +70,16 @@ exports.loginGame = async (data) => {
 
         
     }
-    return data;
+
+    
+     const game_transactions = await model.game_transactions.findAll({
+
+        where: {
+            username: profile.data.username
+        }
+    });
+    
+    return {data,game_transactions:game_transactions[0].dataValues};
 }
 
 
