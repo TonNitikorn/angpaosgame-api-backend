@@ -79,9 +79,16 @@ exports.loginGame = async (data) => {
             ['create_at', 'DESC'],
         ]
     });
-    const game_symbols =  JSON.parse(game_transactions[0].dataValues.symbolsStore) ;
+   
 
-    return {data , game_symbols ,game_transactions};
+if(game_transactions.length == 0){
+   
+    return {data};
+}
+
+    const game_symbols = JSON.parse(game_transactions[0].dataValues.symbolsStore);
+
+    return {data ,game_symbols , game_transactions};
 }
 
 
