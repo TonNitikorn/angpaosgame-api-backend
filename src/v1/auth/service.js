@@ -8,6 +8,7 @@ const transaction = require('../../models/transaction');
 const { or } = require('sequelize');
 
 
+
 // loginOTP
 
     exports.login = async (data) => {
@@ -78,9 +79,9 @@ exports.loginGame = async (data) => {
             ['create_at', 'DESC'],
         ]
     });
-    
+    const game_symbols =  JSON.parse(game_transactions[0].dataValues.symbolsStore) ;
 
-    return {data,game_transactions};
+    return {data , game_symbols ,game_transactions};
 }
 
 

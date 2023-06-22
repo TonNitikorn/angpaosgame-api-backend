@@ -46,7 +46,7 @@ exports.updateCredit = async (data, token) => {
         spacialSpin: data.spacialSpin,
         win: data.win,
         winTotal: data.winTotal,
-        symbolsStore: data.symbolsStore,
+        symbolsStore: data.symbolsStore, 
         bet_type: 'normal',
         bet_status: 'SUCCESS',
         bet_currency: 'baht',
