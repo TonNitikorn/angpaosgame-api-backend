@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         win: DataTypes.STRING(255),
         winTotal: DataTypes.STRING(255),
         symbolsStore:DataTypes.STRING(255),
-        symbolsStore: DataTypes.STRING(255),
+        symbolsStore:  DataTypes.JSON,
         bet_type: DataTypes.ENUM('normal', 'jackpot', 'bonus', 'free_spin', 'demo'),
         bet_status: DataTypes.ENUM('SUCCESS', 'CANCEL', 'PENDING'),
         bet_currency: DataTypes.STRING(255),
