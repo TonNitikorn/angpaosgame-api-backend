@@ -72,13 +72,14 @@ exports.loginGame = async (data) => {
      const game_transactions = await model.game_transactions.findAll({
 
         where: {
-            username: profile.data.username
+            username: profile.data.username,
         },
         order: [
             ['create_at', 'DESC'],
         ]
     });
     
+
     return {data,game_transactions};
 }
 
