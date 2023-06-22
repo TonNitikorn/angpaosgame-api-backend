@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const axios = require('axios');
 const transaction = require('../../models/transaction');
+const { or } = require('sequelize');
 
 
 // loginOTP
@@ -72,7 +73,10 @@ exports.loginGame = async (data) => {
 
         where: {
             username: profile.data.username
-        }
+        },
+        order: [
+            ['create_at', 'DESC'],
+        ]
     });
     
     return {data,game_transactions};
