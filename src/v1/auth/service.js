@@ -67,11 +67,7 @@ exports.loginGame = async (data) => {
         userUUID: decoded.uuid,
         credit: profile.data.credit,
         username: profile.data.username,
-
-        
-    }
-
-    
+    }    
      const game_transactions = await model.game_transactions.findAll({
 
         where: {
@@ -79,7 +75,7 @@ exports.loginGame = async (data) => {
         }
     });
     
-    return {data,game_transactions:game_transactions[0].dataValues};
+    return {data,game_transactions};
 }
 
 
