@@ -57,6 +57,7 @@ const { or } = require('sequelize');
     };
 
 exports.loginGame = async (data) => {
+    console.log(data);
     let jwtkey = 'eyJhbGciOiJIUzI1NiJ9.eyJJc3N1ZXIiOiJza19hZG1pbiIsIlVzZXJuYW1lIjoic29mdGtpbmdkb20ifQ.7uHUzTIGGhetySt1C6RHXd_bqZorOk1kw8CxfaluzjY'
     //verify the token
     // const token = req.headers.authorization.split(' ')[1];
