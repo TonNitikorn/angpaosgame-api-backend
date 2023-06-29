@@ -116,8 +116,13 @@ exports.loginGame3x3 = async (data) => {
             ['create_at', 'DESC'],
         ]
     });
-    console.log(game_transactions);
-    return {data , game_transactions};
-}
-
-
+    if(game_transactions.length == 0){
+   
+        return {data};
+    }
+    
+        const game_symbols = JSON.parse(game_transactions[0].dataValues.symbolsStore);
+    
+        return {data ,game_symbols , game_transactions};
+    }
+    
