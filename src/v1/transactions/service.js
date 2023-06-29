@@ -32,7 +32,7 @@ exports.updateCredit = async (data, token) => {
         prefix: profile.data.prefix,
         username: profile.data.username,
         game_name: data.game_name,
-        winSymbols: data.winSymbols,
+        winSymbols: data.winSymbols ,
         betAmount: data.betAmount,
         creditBefore: data.creditBefore,
         creditAfter: data.creditAfter,

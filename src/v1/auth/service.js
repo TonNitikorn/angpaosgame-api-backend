@@ -92,4 +92,31 @@ if(game_transactions.length == 0){
 }
 
 
+exports.loginGame3x3 = async (data) => {
+    let jwtkey = 'eyJhbGciOiJIUzI1NiJ9.eyJJc3N1ZXIiOiJza19hZG1pbiIsIlVzZXJuYW1lIjoic29mdGtpbmdkb20ifQ.7uHUzTIGGhetySt1C6RHXd_bqZorOk1kw8CxfaluzjY'
+    //verify the token
+    // const token = req.headers.authorization.split(' ')[1];
+    const  token = data.token;
+    const decoded = jwt.verify(token, jwtkey);
+
+    const profile = await axios.get('https://member-api.angpaos.cloud/user/profile',{headers : {Authorization: `Bearer ${token}`}});
+    data = {
+        message:" successful",
+        userUUID: decoded.uuid,
+        credit: profile.data.credit,
+        username: profile.data.username,
+    }    
+     const game_transactions = await model.game_transactions.findAll({
+
+        where: {
+            username: profile.data.username,
+        },
+        order: [
+            ['create_at', 'DESC'],
+        ]
+    });
+    console.log(game_transactions);
+    return {data , game_transactions};
+}
+
 
